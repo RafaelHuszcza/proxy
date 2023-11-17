@@ -8,8 +8,11 @@ app = Flask(__name__)
 substitution_dict = {
     'encerramento': '[palavra censurada]',
     'acolhida': '[palavra censurada]',
-    'buscar': '[palavra censurada]',
-    'acesso': '[palavra censurada]',
+    'institucional': '[palavra censurada]',
+    'cgti': '[palavra censurada]',
+    "coronavírus": "[palavra censurada]",
+    "universidade": "[palavra censurada]",
+    "participe": "[palavra censurada]",
     # Adicione mais palavras a serem substituídas conforme necessário
 }
 
@@ -32,10 +35,10 @@ def proxy():
 
 @app.route('/proxy/<path:site>')
 def show_proxy(site):
+    print(site)
     try:
         response = requests.get(site)
         soup = BeautifulSoup(response.text, 'html.parser')
-
         # Encontrar todas as tags 'a' com o atributo 'href'
         for a_tag in soup.find_all('a', href=True):
             # Adicione seu servidor proxy à frente do URL usando urljoin
@@ -46,7 +49,6 @@ def show_proxy(site):
 
         for tag in soup.find_all(['p','a','header','footer' ,'nav','span', 'div','h1','h2','h3','h4','h5','h6'], string=True):
             tag.string = replace_words(tag.get_text())
-
         # Retornar a página HTML modificada
         return str(soup)
     except requests.exceptions.RequestException as e:
