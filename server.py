@@ -8,20 +8,19 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 # Observação, textos dentro de before e ou after não podem ser alterados....
 CENSORED_WORD = "[palavra censurada]"
-substitution_dict = {
-    'encerramento': CENSORED_WORD,
-    'acolhida': CENSORED_WORD,
-    'institucional': CENSORED_WORD,
-    'cgti': CENSORED_WORD,
-    "coronavírus": CENSORED_WORD,
-    "universidade": CENSORED_WORD,
-    "participe": CENSORED_WORD,
-    # Adicione mais palavras a serem substituídas conforme necessário
-}
+censored_words = [
+    'encerramento',
+    'acolhida',
+    'institucional',
+    'cgti',
+    "coronavírus",
+    "universidade",
+    "participe"
+]
 
 def replace_words(text):
-    for original_word, replacement_word in substitution_dict.items():
-        text = re.sub(r'\b{}\b'.format(re.escape(original_word)), replacement_word, text, flags=re.IGNORECASE)
+    for word in censored_words:
+        text = re.sub(r'\b' + word + r'\b', CENSORED_WORD, text, flags=re.IGNORECASE)
     return text
 
 @app.route('/')
